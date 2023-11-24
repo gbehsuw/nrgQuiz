@@ -5,6 +5,10 @@ import random
 import requests
 import html
 import time
+import questions 
+import os
+realSub = questions.realSubjects()
+subjectCat = questions.subjectCategories()
 
 pygame.init()
 
@@ -67,6 +71,7 @@ def playTrivia(amount, category):
 
   numCorrect = 0
   timeStart = time.time()
+  questionTime = [timeStart]
   
   #loop through the questions
   for question in questionPool:
@@ -89,8 +94,9 @@ def playTrivia(amount, category):
       numCorrect += 1
     else:
       print(f"Incorrect! The correct answer is: {correctChoiceText}\n")
+    questionTime.append(time.time())
   timeEnd = time.time()
-  calculateStats(numCorrect, amount, timeStart, timeEnd)
+  calculateStats(amount, numCorrect, timeStart, timeEnd, questionTime)
 
 ##########################################
 #FUNCTIONS
@@ -115,49 +121,69 @@ def render(text, letterX, letterY):
   text = font.render((text), 1, WHITE)
   gameWindow.blit(text, (letterX, letterY))
 
-def playSubject(subject, questionNum):
+# Subject mode
+def playSubject(subject, questionNum, subjectCat, realSub):
 
-  # running the code for questions and answers of subject questions
-  with open('questions.txt', 'r') as subjectCode:    # opens text file
-    exec(subjectCode.read())                          # executes the text as code
-    randomQNum = random.randint(0,len(subjectCategories[0]-1))
-    print(subjectCategories[realSubject[subject.upper()]][randomQNum]["question"])
-    subjectCode.close()                       # closes the file
+  numCorrectS = 0
+  timeStartS = time.time()
+  questionTimeS = [timeStartS]
   
-def calculateStats (numQuestions: int, numCorrect: int, timeStart: float, timeEnd: float):
+  for forLoopCounter in range(questionNum):
+    # Random question
+    randomQNum = random.randint(0,len(subjectCat[0])-1)
+    # Print question
+    print(subjectCat[realSub.index(subject.upper())][randomQNum][0]["question"])
+    guess = input("Type your answer here: ")
+    if guess == subjectCat[realSub.index(subject.upper())][randomQNum][0]["answer"]:
+      print("Correct!")
+      numCorrectS += 1
+    else:
+      print("Incorrect! The answer is", subjectCat[realSub.index(subject.upper())][randomQNum][0]["answer"])
+    questionTimeS.append(time.time())
+  timeEndS = time.time()
+  calculateStats(questionNum, numCorrectS, timeStartS, timeEndS, questionTimeS)
+  
+def calculateStats (numQuestions: int, numCorrect: int, timeStart: float, timeEnd: float, sinceStart):
   #numCorrect is numCorrect
-  correctPercent = numCorrect/numQuestions * 100
-  timeTotal = round(timeEnd) - round(timeStart) #in seconds
-  averageTime = timeTotal/numQuestions #per Question
-
+  correctPercent = numCorrect/numQuestions*100
+  timeTotal = round(timeEnd - timeStart) #in seconds
+  averageTime = round((timeEnd-timeStart))/numQuestions #per Question
+  #####################################################################
+  # Calculating time per question
+  trueTimePer = []
+  for i in (1,numQuestions):
+    trueTimePer.append(int(round(sinceStart[i] - sinceStart[i-1])))
+  # True time now contains the amount of time spent on each question to the nearest second
+  
 ##########################################
 # PYGAME SETUP
-pygame.display.set_caption("Wowiezowie!")
+pygame.display.set_caption("Wizzy Quizzy")
 gameWindow=pygame.display.set_mode((WIDTH,HEIGHT))
 
 ##########################################
 #main function
+os.system('clear')
 running = True
 while running:
   gameWindow.fill(WHITE)
   gameWindow.blit(background, (0,0))
-  gameWindow.blit(button, (WIDTH/2-50, HEIGHT))
-  gameWindow.blit(button, (WIDTH/2-50, HEIGHT+50))
-  render("Trivia", WIDTH/2-50, HEIGHT+100)
-  render("Subjects", WIDTH/2-50, HEIGHT+180)
+  gameWindow.blit(button, (WIDTH/2+100, HEIGHT))
+  gameWindow.blit(button, (WIDTH/2+100, HEIGHT+50))
+  render(("Trivia"), WIDTH/2+120, HEIGHT+100)
+  render(("Subjects"), WIDTH/2+120, HEIGHT+180)
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       pygame.quit()
 
 
   # Main menu 
-  mainMenu = int(input("1) Triva \n2) Subject \nAnswer here: "))
+  mainMenu = int(input("1) Triva \n2) Subject \n\nOption here: "))
   # Trivia option
   if mainMenu == 1:
     subjectValid = False
     subject = 1
     while not subjectValid:
-      subject = int(input("Enter the subject number: "))
+      subject = int(input("\nEnter the subject number: "))
       if subject in range(1,25):
           subjectValid = True
     subject = subject + 8    
@@ -165,7 +191,7 @@ while running:
     questionNum = 10
     questionValid = False
     while not questionValid:
-      questionNum = int(input("Please input the number of questions: "))
+      questionNum = int(input("\nPlease input the number of questions: "))
       if questionNum in range(1,51):
         questionValid = True
 
@@ -175,8 +201,8 @@ while running:
   elif mainMenu == 2:
     subject = input("Please input the subject of the questions: ")
     questionNum = int(input("Please input the number of questions: "))
-    difficulty = int(input("Please input the difficulty of the questions: "))
-    playSubject(subject, questionNum)
+    
+    playSubject(subject, questionNum, subjectCat, realSub)
   # Menu option unnable to process
   else:
     print("An error has occured and your answer could not be processed \n")
