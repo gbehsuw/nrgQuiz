@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="nrgHacks.css">
+    <script src="https://kit.fontawesome.com/374e75c3ea.js" crossorigin="anonymous"></script>
+    <script defer src="nrgHacks.js"></script>
+    <title>NRG Quiz</title>
+</head>
+<body>
+    <div id="home">
+        <div class="container">
+            <nav>
+                <img src="" alt="logo" class="logo">
+                <ul id="sidemenu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#description">Description</a></li>
+                    <li><a href="#download">Downloads</a></li>
+                    <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+                </ul>
+                <i class="fa-solid fa-bars" onclick="openmenu()""></i>
+            </nav>
+
+            <div class="header-text">
+                <p>NRG Hackathon</p>
+                <h1>Simple <span>Quiz</span></h1>
+            </div>
+
+        </div>
+    </div>
+
+    <!------description------>
+    <div id="description">
+        <div class="container">
+            <div class="row">
+                <div class="desc-col-1">
+                    <img src="Images/aboutme.jpg" alt="Description Image">
+                </div>
+                <div class="desc-col-2">
+                    <h1 class="subtitle">Description</h1>
+                    <p>The idea behind this project is to create a simple
+                        quiz program. The program can read text files that contain
+                        questions, their subject, and their answers (valid and invalid).
+                    </p>
+
+                    <div class="tab-titles">
+                        <p class="tab-link active-link" onclick="opentab('trivia')">Trivia</p>
+                        <p class="tab-link" onclick="opentab('subjects')">Subjects</p>
+                        <p class="tab-link" onclick="opentab('stats')">Stats</p>
+                    </div>
+
+                    <div class="tab-content active-tab" id="trivia">
+                        <ul>
+                            <li><span>Different Categories</span><br>Get up to 50 questions from 23 subjects</li>
+                            <li><span>Difficuly</span><br>Get questions from varying difficulty and question types.</li>
+                            <li><span>Diverse Data Set</span><br>Questions are retrieved from TrivaDB API</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="subjects">
+                        <ul>
+                            <li><span>Math</span><br>Small math equations with text input</li>
+                            <li><span>Science</span><br>Science questions with multipe choice</li>
+                            <li><span>Computer Science</span><br>CS questions with multiple choice</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="stats">
+                        <ul>
+                            <li><span>Time</span><br>Time per question on average</li>
+                            <li><span>Accuracy</span><br>Accuracy on questions, with percentages</li>
+                            <li><span>Amount</span><br>Number of questions correct/incorrect.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="download">
+        <div class="container">
+            <h1 class="subtitle">Downloads</h1>
+            <div class="download-list">
+                <div class="download">
+                    <img src="Images/work1.jpg" alt="thoth">
+                    <div class="layer">
+                        <h3>Python Script</h3>
+                        <p>This is the python script that runs all of the quiz's functions.</p>
+                        <a href="#" download><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+                <div class="download">
+                    <img src="Images/work2.jpg" alt="thoth">
+                    <div class="layer">
+                        <h3>Example Question File</h3>
+                        <p>This is a template question file that you can change to match your own questions.</p>
+                        <a href="#" download><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+                <div class="download">
+                    <img src="Images/work3.jpg" alt="thoth">
+                    <div class="layer">
+                        <h3>Example Answer File</h3>
+                        <p>This is a template answer file that you can change to match your own answers.</p>
+                        <a href="#" download><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
