@@ -19,7 +19,7 @@ HEIGHT = 300
 WHITE = (255, 255, 255)
 font = pygame.font.SysFont("Century Gothic", 25)
 background = pygame.image.load("blackboard.jpg")
-logo = pygame.image.load("New Piskel.png")
+logo = pygame.image.load("logo.png")
 button = pygame.image.load("button.png")
 ##########################################
 #API STUFF
@@ -118,21 +118,144 @@ def renderText(text):
   pygame.display.update()
 
 def render(text, letterX, letterY):
+  text = titleFont.render((text), 1, WHITE)
+  gameWindow.blit(text, (letterX, letterY))
+
+def renderNormal(text, letterX, letterY):
   text = font.render((text), 1, WHITE)
   gameWindow.blit(text, (letterX, letterY))
 
-# Subject mode
+def start():
+  while starting:
+    gameWindow.fill(WHITE)
+    gameWindow.blit(background, (-47,0))
+    gameWindow.blit(button, (WIDTH/2-140, HEIGHT-450))
+    render(("Trivia (1)"), WIDTH/2-120, HEIGHT-420)
+    gameWindow.blit(button, (WIDTH/2-140, HEIGHT-250))
+    render(("Subjs (2)"), WIDTH/2-120, HEIGHT-215)
+    render(("Welcome to AvoQuiz!"), WIDTH/2-300, HEIGHT-555)
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_1]:
+      return True
+    if keys[pygame.K_2]:
+      return False
+    pygame.display.update()
+    pygame.event.clear()
+
+def trivia():
+    while triviaing:
+      print("e")
+      gameWindow.fill(WHITE)
+      gameWindow.blit(background, (-47,0))
+      render(("Select your category"), WIDTH/2-300, HEIGHT-575)
+      renderNormal(("a - General Knowledge"), WIDTH/2-390, HEIGHT-485)
+      renderNormal(("b - Books"), WIDTH/2-390, HEIGHT-460)
+      renderNormal(("c - Film"), WIDTH/2-390, HEIGHT-435)
+      renderNormal(("d - Music"), WIDTH/2-390, HEIGHT-410)
+      renderNormal(("e - Musicals and Theatres"), WIDTH/2-390, HEIGHT-385)
+      renderNormal(("f - Television"), WIDTH/2-390, HEIGHT-360)
+      renderNormal(("g - Video Games"), WIDTH/2-390, HEIGHT-335)
+      renderNormal(("h - Board Games"), WIDTH/2-390, HEIGHT-310)
+      renderNormal(("i - Science and Nature"), WIDTH/2-390, HEIGHT-285)
+      renderNormal(("j - Computers"), WIDTH/2-390, HEIGHT-260)
+      renderNormal(("k - Mathematics"), WIDTH/2-390, HEIGHT-235)
+      renderNormal(("l - Mythology"), WIDTH/2-390, HEIGHT-210)
+      renderNormal(("m - Sports"), WIDTH/2-390, HEIGHT-185)
+      renderNormal(("n - Geography"), WIDTH/2-390, HEIGHT-160)
+      renderNormal(("o - History"), WIDTH/2-390, HEIGHT-135)
+      renderNormal(("p - Politics"), WIDTH/2-390, HEIGHT-110)
+      renderNormal(("q - Art"), WIDTH/2-390, HEIGHT-85)
+      renderNormal(("r - Celebreties"), WIDTH/2-390, HEIGHT-60)
+      renderNormal(("s - Animals"), WIDTH/2-390, HEIGHT-35)
+      renderNormal(("t - Vehicles"), WIDTH/2-100, HEIGHT-485)
+      renderNormal(("u - Comics"), WIDTH/2-100, HEIGHT-460)
+      renderNormal(("v - Gadgets"), WIDTH/2-100, HEIGHT-435)
+      renderNormal(("w - Japanese Anime and Manga"), WIDTH/2-100, HEIGHT-410)
+      renderNormal(("x - Cartoon and Animations"), WIDTH/2-100, HEIGHT-385)
+      keys = pygame.key.get_pressed()
+      if keys[pygame.K_a]:
+        return 1
+      if keys[pygame.K_b]:
+        return 2
+      if keys[pygame.K_c]:
+        return 3
+      if keys[pygame.K_d]:
+        return 4
+      if keys[pygame.K_e]:
+        return 5
+      if keys[pygame.K_f]:
+        return 6
+      if keys[pygame.K_g]:
+        return 7
+      if keys[pygame.K_h]:
+        return 8
+      if keys[pygame.K_i]:
+        return 9
+      if keys[pygame.K_j]:
+        return 10
+      if keys[pygame.K_k]:
+        return 11
+      if keys[pygame.K_l]:
+        return 12
+      if keys[pygame.K_m]:
+        return 13
+      if keys[pygame.K_n]:
+        return 14
+      if keys[pygame.K_o]:
+        return 15
+      if keys[pygame.K_p]:
+        return 16
+      if keys[pygame.K_q]:
+        return 17
+      if keys[pygame.K_r]:
+        return 18
+      if keys[pygame.K_s]:
+        return 19
+      if keys[pygame.K_t]:
+        return 20
+      if keys[pygame.K_u]:
+        return 21
+      if keys[pygame.K_v]:
+        return 22
+      if keys[pygame.K_w]:
+        return 23
+      if keys[pygame.K_x]:
+        return 24
+      pygame.display.update()
+
+def triviaQuestion():
+    gameWindow.fill(WHITE)
+    gameWindow.blit(background, (-47,0))
+    render((questionText), WIDTH/2-300, HEIGHT-575)
+    renderNormal(("1.",choices[0]), WIDTH/2-300, HEIGHT-575)
+    renderNormal(("2.",choices[1]), WIDTH/2-300, HEIGHT-540)
+    renderNormal(("3.",choices[2]), WIDTH/2-300, HEIGHT-505)
+    renderNormal(("4.",choices[3]), WIDTH/2-300, HEIGHT-470)
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_1]:
+      return 1
+    if keys[pygame.K_2]:
+      return 2
+    if keys[pygame.K_3]:
+      return 3
+    if keys[pygame.K_4]:
+      return 4
+    pygame.display.update()
+
+###### SUBJECT QUIZ ######
 def playSubject(subject, questionNum, subjectCat, realSub):
 
   numCorrectS = 0
   timeStartS = time.time()
   questionTimeS = [timeStartS]
-  
+
+  # Looping for number of questions user specified
   for forLoopCounter in range(questionNum):
     # Random question
-    randomQNum = random.randint(0,len(subjectCat[0])-1)
+    randomQNum = random.randint(0,len(subjectCat[realSub.index(subject.upper())])-1)
     # Print question
     print(subjectCat[realSub.index(subject.upper())][randomQNum][0]["question"])
+    # Asking for guess and checking with answer
     guess = input("Type your answer here: ")
     if guess == subjectCat[realSub.index(subject.upper())][randomQNum][0]["answer"]:
       print("Correct!")
@@ -142,12 +265,18 @@ def playSubject(subject, questionNum, subjectCat, realSub):
     questionTimeS.append(time.time())
   timeEndS = time.time()
   calculateStats(questionNum, numCorrectS, timeStartS, timeEndS, questionTimeS)
-  
+
+
+
 def calculateStats (numQuestions: int, numCorrect: int, timeStart: float, timeEnd: float, sinceStart):
   #numCorrect is numCorrect
-  correctPercent = numCorrect/numQuestions*100
+  if (numQuestions != 0):
+    correctPercent = numCorrect/numQuestions*100
+    averageTime = round((timeEnd-timeStart))/numQuestions #per Question
+  else:
+    correctPercent = 0
+    averageTime = 0
   timeTotal = round(timeEnd - timeStart) #in seconds
-  averageTime = round((timeEnd-timeStart))/numQuestions #per Question
   #####################################################################
   # Calculating time per question
   trueTimePer = []
@@ -159,18 +288,20 @@ def calculateStats (numQuestions: int, numCorrect: int, timeStart: float, timeEn
 # PYGAME SETUP
 pygame.display.set_caption("Wizzy Quizzy")
 gameWindow=pygame.display.set_mode((WIDTH,HEIGHT))
+starting = True
+triviaing = False
 
 ##########################################
 #main function
 os.system('clear')
+
 running = True
+start()
+triviaing = (start())
+trivia()
+for i in range(questionNum):
+  triviaQuestion()
 while running:
-  gameWindow.fill(WHITE)
-  gameWindow.blit(background, (0,0))
-  gameWindow.blit(button, (WIDTH/2+100, HEIGHT))
-  gameWindow.blit(button, (WIDTH/2+100, HEIGHT+50))
-  render(("Trivia"), WIDTH/2+120, HEIGHT+100)
-  render(("Subjects"), WIDTH/2+120, HEIGHT+180)
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       pygame.quit()
@@ -183,7 +314,7 @@ while running:
     subjectValid = False
     subject = 1
     while not subjectValid:
-      subject = int(input("\nEnter the subject number: "))
+      subject = trivia()
       if subject in range(1,25):
           subjectValid = True
     subject = subject + 8    
@@ -201,8 +332,10 @@ while running:
   elif mainMenu == 2:
     subject = input("Please input the subject of the questions: ")
     questionNum = int(input("Please input the number of questions: "))
-    
-    playSubject(subject, questionNum, subjectCat, realSub)
+    if questionNum <= len(subjectCat[realSub.index(subject.upper())]):
+      playSubject(subject, questionNum, subjectCat, realSub)
+    else:
+      print("Not enough questions in that category. Please choose less questions!")
   # Menu option unnable to process
   else:
     print("An error has occured and your answer could not be processed \n")
